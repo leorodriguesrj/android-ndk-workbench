@@ -4,15 +4,15 @@ Dockerized workbench for Android NDK
 
 ## Build container
 
-``bash
+```bash
 docker build -t android-ndk-workbench \
     --build-arg HTTP_PROXY=$PRX \
     --build-arg HTTPS_PROXY=$PRX \
     .
-``
+```
 
 ## Run workbench
 
-``bash
+```bash
 docker run -i -t android-ndk-workbench
-``
+```
