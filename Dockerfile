@@ -26,13 +26,17 @@ RUN	if [ -n "$HTTP_PROXY" ]; then echo "Acquire::http::proxy \"$HTTP_PROXY\";" >
     if [ -n "$HTTPS_PROXY" ]; then echo "Acquire::https::proxy \"$HTTPS_PROXY\";" >> /etc/apt/apt.conf.d/00proxy; fi && \
     if [ -n "$FTP_PROXY" ]; then echo "Acquire::ftp::proxy \"$FTP_PROXY\";" >> /etc/apt/apt.conf.d/00proxy; fi && \
     apt-get update && \
-    apt-get install -y libsqlite3-dev zlib1g-dev && \
-    apt-get install -y libncurses5-dev libgdbm-dev libbz2-dev && \
-    apt-get install -y libreadline5-dev libssl-dev libdb-dev && \
+    apt-get install -y libsqlite3-dev zlib1g-dev \
+        libncurses5-dev libgdbm-dev libbz2-dev \
+        libreadline-dev libssl-dev libdb-dev && \
     apt-get autoremove && \
     apt-get clean && \
     rm -f /etc/apt/apt.conf.d/00proxy
 
-RUN mkdir /{workbench,ndk}
+ENV NDK_HOME /ndk
+ENV WORKBENCH_HOME /workbench
+ENV PATH "$PATH:$NDK_HOME/build/tools"
+
+RUN mkdir /workbench && mkdir /ndk
 
 CMD ["bash"]
