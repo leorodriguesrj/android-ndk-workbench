@@ -33,6 +33,6 @@ RUN	if [ -n "$HTTP_PROXY" ]; then echo "Acquire::http::proxy \"$HTTP_PROXY\";" >
     apt-get clean && \
     rm -f /etc/apt/apt.conf.d/00proxy
 
-RUN mkdir /workbench
+RUN mkdir /{workbench,ndk}
 
 CMD ["bash"]
