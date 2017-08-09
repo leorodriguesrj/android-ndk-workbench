@@ -25,3 +25,15 @@ docker run -i -t \
     -v $(pwd)/ndk:/ndk \
     android-ndk-workbench
 ``
+
+## Run workbench with proxy and host network
+
+``bash
+docker run -i -t \
+    -v $(pwd)/working-directory:/workbench \
+    -v $(pwd)/ndk:/ndk \
+    -e HTTP_PROXY=$PROXY
+    -e HTTPS_PROXY=$PROXY
+    -network "host"
+    android-ndk-workbench
+``
