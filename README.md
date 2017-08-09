@@ -16,3 +16,12 @@ docker build -t android-ndk-workbench \
 ``bash
 docker run -i -t android-ndk-workbench
 ``
+
+## Run workbench with specific volumes
+
+``bash
+docker run -i -t \
+    -v $(pwd)/working-directory:/workbench \
+    -v $(pwd)/ndk:/ndk \
+    android-ndk-workbench
+``
