@@ -51,9 +51,28 @@ RUN if [ -n "$HTTP_PROXY" ]; then echo "Acquire::http::proxy \"$HTTP_PROXY\";" >
     apt-get autoremove && \
     apt-get clean
 
+
+RUN if [ -n "$HTTP_PROXY" ]; then echo "Acquire::http::proxy \"$HTTP_PROXY\";" >> /etc/apt/apt.conf.d/00proxy; fi && \
+    if [ -n "$HTTPS_PROXY" ]; then echo "Acquire::https::proxy \"$HTTPS_PROXY\";" >> /etc/apt/apt.conf.d/00proxy; fi && \
+    if [ -n "$FTP_PROXY" ]; then echo "Acquire::ftp::proxy \"$FTP_PROXY\";" >> /etc/apt/apt.conf.d/00proxy; fi && \
+    apt-get install -y curl && \
+    echo --insecure > ~/.curlrc && \
+    git config --global http.sslVerify "false" && \
+    apt-get autoremove && \
+    apt-get clean
+
+COPY depot_tools-master.tar.gz /tmp
+
+RUN mkdir /depot_tools && cd /depot_tools && \
+    tar -xvf /tmp/depot_tools-master.tar.gz && \
+    rm /tmp/depot_tools-master.tar.gz && \
+    OLDPATH=$PATH && \
+    export PATH="/depot_tools:$PATH" && \
+    gclient
+
 ENV NDK_HOME /ndk
 ENV WORKBENCH_HOME /workbench
-ENV PATH "$PATH:$NDK_HOME/build/tools"
+ENV PATH "$PATH:$NDK_HOME/build/tools:/depot_tools"
 
 RUN mkdir /workbench && mkdir /ndk
 
